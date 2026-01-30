@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>VibeNDA — Demo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #0d0d0d;
+      color: #e5e5e5;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .content {
+      max-width: 420px;
+      width: 100%;
+    }
+    .content h1 {
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      font-weight: 600;
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+    .content p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0 0 24px;
+      color: rgba(255,255,255,0.8);
+    }
+    .content.hidden {
+      filter: blur(8px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      font-size: 0.875rem;
+      margin-bottom: 24px;
+    }
+    a {
+      color: #7dd3fc;
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+    .reset {
+      margin-top: 32px;
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .reset a {
+      display: inline-block;
+      padding: 12px 20px;
+      min-height: 44px;
+      line-height: 20px;
+      box-sizing: border-box;
+      color: rgba(255,255,255,0.6);
+    }
+  </style>
+</head>
+<body>
+  <main class="content hidden" id="main">
+    <div class="badge">Protected</div>
+    <h1>You're in.</h1>
+    <p>This is the vibe-coded thing. You executed the VibeNDA by sliding to reveal. Your access was logged.</p>
+    <p><a href="https://github.com/ConejoCapital/VibeNDA">VibeNDA on GitHub</a></p>
+    <p class="reset"><a href="#" id="reset">Reset demo (clear consent)</a></p>
+  </main>
+
+  <script>
+    (function () {
+      var main = document.getElementById('main');
+      function show() {
+        if (main) {
+          main.classList.remove('hidden');
+        }
+      }
+      document.addEventListener('vibenda:agreed', show);
+      var stored = null;
+      try {
+        var key = Object.keys(localStorage).filter(function (k) { return k.indexOf('vibenda_consent') === 0; })[0];
+        if (key) stored = localStorage.getItem(key);
+      } catch (e) {}
+      if (stored) show();
+      var reset = document.getElementById('reset');
+      if (reset) {
+        reset.addEventListener('click', function (e) {
+          e.preventDefault();
+          try {
+            Object.keys(localStorage).forEach(function (k) {
+              if (k.indexOf('vibenda_consent') === 0) localStorage.removeItem(k);
+            });
+            location.reload();
+          } catch (err) {}
+        });
+      }
+    })();
+  </script>
+  <script
+    src="../vibe-nda.js"
+    data-vibenda-terms-url="../TERMS.md"
+    data-vibenda-endpoint="none"
+  ></script>
+</body>
+</html>

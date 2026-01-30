@@ -1,0 +1,12 @@
+{
+  "name": "vibenda",
+  "version": "1.0.0",
+  "description": "Slide-to-reveal NDA gate for vibe-coded projects",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve . -p 3000",
+    "preview": "npx serve . -p 3000"
+  },
+  "keywords": ["nda", "vibe-coded", "consent", "fingerprint"],
+  "license": "MIT"
+}
